@@ -12,18 +12,14 @@ import javax.swing.JOptionPane;
  *
  */
 public class Usuario {
-
+	
 	public void exibeMsg(String texto) {
-		JOptionPane.showMessageDialog(null, texto, "MENSAGEM", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, texto);
 	}
 
 	public void exibeMsgErro(String texto) {
-		JOptionPane.showMessageDialog(null, texto, "ERRO", JOptionPane.ERROR_MESSAGE);
-	}
-
-	public void exibeMsgDebug(String texto) {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		System.out.println(sdf.format(new Date()) + " - [DEBUG] " + texto);
+		JOptionPane.showMessageDialog(null, texto, "ERRO", 
+				JOptionPane.ERROR_MESSAGE);
 	}
 
 	public Integer exibeMenuPrincipal() {
@@ -56,26 +52,6 @@ public class Usuario {
 
 	public Integer recebeInteiro(String texto) {
 		return Integer.parseInt(JOptionPane.showInputDialog(texto));
-	}
-
-	public Long recebeLong(String texto) {
-		return Long.parseLong(JOptionPane.showInputDialog(texto));
-	}
-
-	public Double recebeDouble(String texto) {
-		return Double.parseDouble(JOptionPane.showInputDialog(texto));
-	}
-
-	public Float recebeFloat(String texto) {
-		return Float.parseFloat(JOptionPane.showInputDialog(texto));
-	}
-
-	public Boolean recebeBoolean(String texto) {
-		Integer op = JOptionPane.showConfirmDialog(null, texto);
-
-		if (op == 0)
-			return true;
-		return false;
 	}
 
 	public String recebeTexto(String texto) {

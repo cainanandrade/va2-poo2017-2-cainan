@@ -5,16 +5,31 @@ package br.unincor.model;
  * com a classe "Produto"
  *
  */
-public class Sobremesa {
+public class Sobremesa extends Produto{
 	
-	private Boolean adicionais; //Define se adiciona mais alguns ingredientes - sem validação
+	public Sobremesa(String nome, Double preco, Boolean adicionais) {
+		super(nome, preco);
+		this.adicionais = adicionais;
+	}
 
+	private Boolean adicionais;
 	/** Criar um construtor que recebe todos os atributos como parâmetro **/
 
 	/** Criar getters e setters **/
 
 	/** Implementar para mostrar os valores de todos os atributos **/
+
+	public Boolean getAdicionais() {
+		return adicionais;
+	}
+
+	public void setAdicionais(Boolean adicionais) {
+		this.adicionais = adicionais;
+	}
+	
+	@Override
 	public String verDados() {
-		return "";
+		// TODO Auto-generated method stub
+		return super.verDados() + "\nAdicionais: " + this.adicionais;
 	}
 }

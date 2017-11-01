@@ -1,34 +1,144 @@
 package br.unincor.controle;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.DEFAULT;
+
+import br.unincor.exception.PrecoZeradoException;
+import br.unincor.model.Produto;
+import br.unincor.model.Sanduiche;
+import br.unincor.model.Sobremesa;
+import br.unincor.view.Usuario;
+
 public class Main {
 
 	public static void main(String[] args) {
+		Usuario view = new Usuario();
 		
-		/**
-		 * 1. Exibir o menu principal, onde o usuário deverá escolher
-		 * qual produto deseja (sanduíche ou sobremesa), também deve-se ter a
-		 * opção de “Finalizar pedido”.
-		 * 
-		 * 2. De acordo com a opção escolhida receber todos os atributos do
-		 * produto desejado (nome, preço, trio e dobro de recheio para sanduíche
-		 * e nome, preço e adicionais para sobremesa).
-		 * 
-		 * 3. Após a criação do produto, adicioná-lo na lista de produtos.
-		 * 
-		 * 4. Exibir o menu de pagamento com as opções “Dinheiro” e “Cartão”.
-		 * Caso não seja selecionada nenhuma opção, considerar que o pagamento
-		 * será feito em dinheiro.
-		 * 
-		 * 5. Para cada produto da lista calcular o seu valor final (utilizando
-		 * os métodos da classe CalculaPreco) e salvá-lo no atributo ‘preco’.
-		 * Tratar a exceção de preço zerado.
-		 * 
-		 * 6. Somar o valor final de todos os produtos para obter o valor total do pedido.
-		 * 
-		 * 7. Ao final do processamento do pedido, exibir um resumo do pedido com o preço
-		 * final de cada produto e valor final do pedido.
-		 * 
-		 */
+		Integer opcao = view.exibeMenuPrincipal();
+		
+		ArrayList<Produto> listaCompras = new ArrayList<Produto>();
+		
+		CalculoPrecos cp = new CalculoPrecos();
+		
+		DecimalFormat df = new DecimalFormat("0.00");
+		
+		while(opcao < 3){
+			switch (opcao){
+			
+			case 0:
+				Sanduiche sanduba = new Sanduiche("SANDUICHE: " + 
+			view.recebeTexto("Digite o nome do Sanduiche: "), 
+			/*(Math.random()*15-5)*/ 20.0, true, true);
+				///view.exibeMsg(sanduba.verDados());
+				listaCompras.add(sanduba);
+				break;
+			
+			case 1:
+				Sobremesa sobremesa = new Sobremesa("SOBREMESA: " +
+						view.recebeTexto("Digite o nome da sobremesa: "),
+						/*(Math.random()*15-5)*/ 10.0, true);
+				listaCompras.add(sobremesa);
+				break;
+			
+			case 2:				
+				try {
+					
+					if (listaCompras.isEmpty())
+						view.exibeMsg("Você ainda não comprou nada!!");
+					else{
+					
+					Integer opcoes = view.exibeMenuPagamento();
+					
+					for (int i = 0; i < listaCompras.size(); i++) {
+						cp.calculaPrecoFinal(listaCompras.get(i));						
+					}
+					
+					if (opcoes == 1){
+						String resumoPedido = null;
+						for (int i = 0; i < listaCompras.size(); i++) {
+							resumoPedido += listaCompras.get(i).verDados() + "\n\n";
+						}
+						
+						view.exibeMsg("RESUMO DO PEDIDO: \n" + resumoPedido + 
+								"\n\nPreço Final: " + df.format(cp.pagtoCartao(listaCompras)));
+					}
+					
+					else{
+						String resumoPedido = null;
+						for (int i = 0; i < listaCompras.size(); i++) {
+							resumoPedido += listaCompras.get(i).verDados() + "\n\n";
+						}
+						
+						view.exibeMsg("RESUMO DO PEDIDO: \n" + resumoPedido + 
+								"\n\nPreço Final: " + df.format(cp.pagtoDinheiro(listaCompras)));
+					}
+					
+					System.exit(0);
+					
+					
+					}
+					
+					break;
+					
+				} catch (PrecoZeradoException e) {
+					view.exibeMsgErro("ERRO COM O PRODUTO \n\n" + e.getMessage());
+				}				
+				break;
+				
+			case -1:				
+				try {
+					
+					if (listaCompras.isEmpty())
+						view.exibeMsg("Você ainda não comprou nada!!");
+					else{
+					
+					Integer opcoes = view.exibeMenuPagamento();
+					
+					for (int i = 0; i < listaCompras.size(); i++) {
+						cp.calculaPrecoFinal(listaCompras.get(i));						
+					}
+					
+					if (opcoes == 1){
+						String resumoPedido = null;
+						for (int i = 0; i < listaCompras.size(); i++) {
+							resumoPedido += listaCompras.get(i).verDados() + "\n\n";
+						}
+						
+						view.exibeMsg("RESUMO DO PEDIDO: \n" + resumoPedido + 
+								"\n\nPreço Final: " + df.format(cp.pagtoCartao(listaCompras)));
+					}
+					
+					else{
+						String resumoPedido = null;
+						for (int i = 0; i < listaCompras.size(); i++) {
+							resumoPedido += listaCompras.get(i).verDados() + "\n\n";
+						}
+						
+						view.exibeMsg("RESUMO DO PEDIDO: \n" + resumoPedido + 
+								"\n\nPreço Final: " + df.format(cp.pagtoDinheiro(listaCompras)));
+					}
+					
+					System.exit(0);
+					
+					
+					}
+					
+					break;
+					
+				} catch (PrecoZeradoException e) {
+					view.exibeMsgErro("ERRO COM O PRODUTO \n\n" + e.getMessage());
+				}				
+				break;
+				
+			
+			}
+			
+			opcao = view.exibeMenuPrincipal();
+			
+			
+		}
 		
 	}
 }
